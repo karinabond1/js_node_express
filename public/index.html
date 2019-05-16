@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Express</title>
+</head>
+
+<body>
+    <style>
+        #sidebar {
+            width: 500px;
+            float: left;
+            height: 550px;
+        }
+
+        #container {
+            width: 50%;
+        }
+    </style>
+    <h1>Hello, Express!</h1>
+
+    <div>
+        <div id="sidebar">
+            <input type="text" id="input_text" value="">
+            <button type="submit" id="send_btn" onclick="send_fun()">SEND</button>
+        </div>
+        <div id="container"><div>
+            <button type="submit" id="get_btn" onclick="get_fun()">GetData</button>
+            <ul id="ul_list" >
+            </ul></div>
+        </div>
+    </div>
+    <script>
+        //var dataInp = document.getElementsByTagName("input")[0];
+        //var val = dataInp.value;
+        var val = "";
+        var values = [];
+        var dataInput = document.getElementById('input_text');
+        send_btn.onclick = function () {
+            var dataInp = document.getElementsByTagName("input")[0];
+            val = dataInp.value;
+
+            //console.log(val);
+            //Exapmle POST request
+            fetch('/set_test', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: val })
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                });
+            //document.querySelector('#input_text').innerHTML.value = "";
+            dataInput.innerHTML = "";
+
+        }
+        var dataList = document.getElementById('ul_list');
+
+        get_btn.onclick = function () {
+            // var ul_list = document.getElementById('ul_list');
+
+            //Exapmle GET request
+
+            dataList.innerHTML = "";
+
+            fetch('/test.json')
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    values.push(data);
+                    for (var i = 0; i < values.length; i++) {
+                        //console.log(values[i].values[i].data);
+                        //document.querySelector('#ul_list').innerHTML = '<li>' +values[i].values[i].data + '</li>';
+
+                        //values.forEach((value) => {
+                           // value.forEach((li) => {
+                                console.log(values[i].values[i].data);
+                                var newLi = document.createElement('li');
+                                newLi.innerHTML = values[i].values[i].data;
+                                dataList.appendChild(newLi);
+                         //   });
+                        //});
+                    }
+                });
+
+
+
+
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
